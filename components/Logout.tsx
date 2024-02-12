@@ -2,9 +2,9 @@
 
 import axios from "axios";
 import { useState } from "react";
-import { Button } from "./ui/button";
 import { toast } from "./ui/use-toast";
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
 export default function Logout() {
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,7 @@ export default function Logout() {
   }
 
   return (
-    <Button className="w-full" loading={loading} onClick={logout}>
+    <Button className="w-full" onClick={logout}>
       Logout
     </Button>
   );
