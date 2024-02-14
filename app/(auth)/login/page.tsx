@@ -62,7 +62,7 @@ export default function Page() {
         </form>
         <div className="mt-4 text-center">
           <span>
-            Don\'t have an account?
+            {"Don't have an account?"}
             <Link href="/register"> Register</Link>
           </span>
         </div>
