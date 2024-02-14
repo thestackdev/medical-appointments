@@ -1,3 +1,4 @@
+import { relations } from "drizzle-orm";
 import {
   boolean,
   pgEnum,
@@ -29,3 +30,38 @@ export const users = pgTable("users", {
     .notNull()
     .defaultNow(),
 });
+
+export const doctorAppointments = pgTable("doctor_appointments", {
+  id: uuid("id").primaryKey().notNull().defaultRandom(),
+  doctorId: uuid("doctor_id").notNull(),
+  patientId: uuid("patient_id").notNull(),
+  appointmentDate: timestamp("appointment_date", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const doctorAppointmentsPatientRelation = relations(
+  doctorAppointments,
+  ({ one }) => ({
+    patient: one(users, {
+      fields: [doctorAppointments.patientId],
+      references: [users.id],
+    }),
+  })
+);
+
+export const doctorAppointmentsDoctorRelation = relations(
+  doctorAppointments,
+  ({ one }) => ({
+    doctor: one(users, {
+      fields: [doctorAppointments.doctorId],
+      references: [users.id],
+    }),
+  })
+);

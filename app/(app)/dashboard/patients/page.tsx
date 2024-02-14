@@ -7,7 +7,7 @@ import CreateDoctor from "@/components/create-doctor";
 
 export default async function Page() {
   const usersResponse = await db.query.users.findMany({
-    where: eq(users.accountType, "doctor"),
+    where: eq(users.accountType, "patient"),
     orderBy: desc(users.createdAt),
   });
 
@@ -15,10 +15,7 @@ export default async function Page() {
     <div>
       <main className="max-w-screen-xl mx-auto p-4 mt-8">
         <div>
-          <div className="flex w-full items-center justify-between">
-            <h1 className="text-2xl font-bold mt-8 mb-4">Doctors</h1>
-            <CreateDoctor />
-          </div>
+          <h1 className="text-2xl font-bold mt-8 mb-4">Patients</h1>
           <DataTable columns={userColumns} data={usersResponse} />
         </div>
       </main>

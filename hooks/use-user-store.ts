@@ -3,12 +3,19 @@ import { create } from "zustand";
 
 interface UserStore {
   user: Session | null;
+  isAdmin: boolean;
   setUser: (state: Session) => void;
 }
 
 const useUserStore = create<UserStore>((set) => ({
   user: null,
-  setUser: (state) => set({ user: state }),
+  isAdmin: false,
+  setUser: (state) => {
+    set({
+      user: state,
+      isAdmin: state?.accountType === "admin",
+    });
+  },
 }));
 
 export default useUserStore;

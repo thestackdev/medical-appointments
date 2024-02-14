@@ -2,12 +2,6 @@
 
 import { ThemeToggle } from "@/app/theme-toggle";
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import {
   Sheet,
   SheetClose,
   SheetContent,
@@ -18,15 +12,14 @@ import { cn } from "@/lib/utils";
 import { Session } from "@/types";
 import {
   AlignLeft,
-  GiftIcon,
+  BookCheck,
+  GraduationCap,
   Home,
-  MenuSquare,
   PersonStanding,
-  Settings,
+  Users,
 } from "lucide-react";
 import Link from "next/link";
 import Logout from "./Logout";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Separator } from "./ui/separator";
 import { useEffect } from "react";
@@ -39,14 +32,19 @@ const sidebarItems = [
     href: "/dashboard",
   },
   {
+    name: "Appointments",
+    icon: BookCheck,
+    href: "/dashboard/appointments",
+  },
+  {
     name: "Doctors",
-    icon: PersonStanding,
+    icon: GraduationCap,
     href: "/dashboard/doctors",
   },
   {
     name: "Patients",
-    icon: MenuSquare,
-    href: "/dashboard/patient",
+    icon: Users,
+    href: "/dashboard/patients",
   },
 ];
 
@@ -75,10 +73,7 @@ export default function MainNav({ className, session }: MainNavProps) {
           <SheetTrigger asChild>
             <AlignLeft className="cursor-pointer" size={30} />
           </SheetTrigger>
-          <SheetContent
-            position="left"
-            className="w-full max-w-sm flex flex-col flex-1 justify-between"
-          >
+          <SheetContent className="w-full max-w-sm flex flex-col flex-1 justify-between">
             <SheetDescription className="mt-4">
               <ul className="flex flex-col w-full gap-2 text-sm">
                 {sidebarItems.map(({ name, icon: Icon, href }, index) => (
@@ -97,12 +92,19 @@ export default function MainNav({ className, session }: MainNavProps) {
               </ul>
             </SheetDescription>
             <div className="flex flex-col w-full items-start">
-              <Label className="text-lg mb-4">{session?.email}</Label>
+              <Label className="text-lg mb-4">
+                {session?.email}{" "}
+                <span className="capitalize">
+                  {` (${session.accountType})`}
+                </span>
+              </Label>
               <Logout />
             </div>
           </SheetContent>
         </Sheet>
-        <Input className="max-w-lg" placeholder="Search" />
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 lg:text-xl dark:text-white">
+          Medical Appointments
+        </h1>
         <ThemeToggle />
       </nav>
       <Separator />
