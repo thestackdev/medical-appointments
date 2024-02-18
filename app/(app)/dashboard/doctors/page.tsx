@@ -1,14 +1,27 @@
 import db from "@/database";
-import { users } from "@/database/schema";
+import { doctors, users } from "@/database/schema";
 import { desc, eq } from "drizzle-orm";
 import { DataTable } from "@/components/ui/data-table";
-import { columns as userColumns } from "@/utils/columns/user-columns";
+import { columns as doctorColumns } from "@/utils/columns/doctors-columns";
 import CreateDoctor from "@/components/create-doctor";
+import { checkSignedIn } from "@/helpers/session";
 
 export default async function Page() {
-  const usersResponse = await db.query.users.findMany({
-    where: eq(users.accountType, "doctor"),
-    orderBy: desc(users.createdAt),
+  const session = await checkSignedIn();
+
+  const response = await db.query.doctors.findMany({
+    with: {
+      user: true,
+    },
+    orderBy: desc(doctors.createdAt),
+  });
+
+  const doctorsResponse = response.map((doctor) => {
+    return {
+      ...doctor,
+      displayName: doctor.user.displayName,
+      email: doctor.user.email,
+    };
   });
 
   return (
@@ -17,9 +30,9 @@ export default async function Page() {
         <div>
           <div className="flex w-full items-center justify-between">
             <h1 className="text-2xl font-bold mt-8 mb-4">Doctors</h1>
-            <CreateDoctor />
+            {session?.accountType === "admin" && <CreateDoctor />}
           </div>
-          <DataTable columns={userColumns} data={usersResponse} />
+          <DataTable columns={doctorColumns} data={doctorsResponse} />
         </div>
       </main>
     </div>

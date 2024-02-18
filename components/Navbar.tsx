@@ -10,14 +10,7 @@ import {
 } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
 import { Session } from "@/types";
-import {
-  AlignLeft,
-  BookCheck,
-  GraduationCap,
-  Home,
-  PersonStanding,
-  Users,
-} from "lucide-react";
+import { AlignLeft, BookCheck, GraduationCap, Home, Users } from "lucide-react";
 import Link from "next/link";
 import Logout from "./Logout";
 import { Label } from "./ui/label";

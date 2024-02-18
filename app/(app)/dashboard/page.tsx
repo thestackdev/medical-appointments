@@ -6,27 +6,36 @@ import {
 } from "@/components/ui/card";
 import { DataTable } from "@/components/ui/data-table";
 import db from "@/database";
-import { users } from "@/database/schema";
+import { doctors, users } from "@/database/schema";
 import { desc, eq, sql } from "drizzle-orm";
 import { ArrowRight, GraduationCap, Users } from "lucide-react";
-import { columns as userColumns } from "@/utils/columns/user-columns";
+import { columns as doctorColumns } from "@/utils/columns/doctors-columns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Page() {
   const [{ count: totalDoctors }] = await db
     .select({ count: sql<number>`count(*)` })
-    .from(users)
-    .where(eq(users.accountType, "doctor"));
+    .from(doctors);
 
   const [{ count: totalPatients }] = await db
     .select({ count: sql<number>`count(*)` })
     .from(users)
     .where(eq(users.accountType, "patient"));
 
-  const doctors = await db.query.users.findMany({
-    where: eq(users.accountType, "doctor"),
+  const doctorsResponse = await db.query.doctors.findMany({
+    with: {
+      user: true,
+    },
     limit: 10,
+  });
+
+  const doctorsResponseWithUser = doctorsResponse.map((doctor) => {
+    return {
+      ...doctor,
+      displayName: doctor.user.displayName,
+      email: doctor.user.email,
+    };
   });
 
   return (
@@ -68,7 +77,7 @@ export default async function Page() {
             </Button>
           </Link>
         </div>
-        <DataTable columns={userColumns} data={doctors} />
+        <DataTable columns={doctorColumns} data={doctorsResponseWithUser} />
       </div>
     </main>
   );

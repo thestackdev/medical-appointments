@@ -1,20 +1,23 @@
 import { JWTPayload } from "jose";
 import { createSelectSchema } from "drizzle-zod";
-import { users, doctorAppointments } from "./database/schema";
+import { users, doctorAppointments, doctors } from "./database/schema";
 import * as z from "zod";
 
 export type Session = JWTPayload & {
   id: string;
-  username: string;
-  mobile: string;
+  displayName: string;
   email: string;
-  name: string;
-  createdAt: Date;
-  updatedAt: Date;
+  accountType: string;
 };
 
 const selectUserSchema = createSelectSchema(users);
 const selectDoctorAppointmentsSchema = createSelectSchema(doctorAppointments);
+const selectDoctorsSchema = createSelectSchema(doctors);
 
 export type User = z.infer<typeof selectUserSchema>;
+export type Doctors = z.infer<typeof selectDoctorsSchema>;
 export type DoctorAppointment = z.infer<typeof selectDoctorAppointmentsSchema>;
+
+export type DoctorWithUser = Doctors & {
+  user: User;
+};

@@ -1,13 +1,13 @@
 "use client";
 
 import DeleteDoctor from "@/components/delete-doctor";
-import DeletePatient from "@/components/delete-patient";
+import UpdateDoctor from "@/components/update-doctor";
 import useUserStore from "@/hooks/use-user-store";
-import { User } from "@/types";
+import { DoctorWithUser } from "@/types";
 import { ColumnDef } from "@tanstack/react-table";
 import moment from "moment";
 
-export const columns: ColumnDef<User>[] = [
+export const columns: ColumnDef<DoctorWithUser>[] = [
   {
     accessorKey: "displayName",
     header: "Display Name",
@@ -15,6 +15,10 @@ export const columns: ColumnDef<User>[] = [
   {
     accessorKey: "email",
     header: "Email",
+  },
+  {
+    accessorKey: "speciality",
+    header: "Speciality",
   },
   {
     accessorKey: "created",
@@ -32,7 +36,8 @@ export const columns: ColumnDef<User>[] = [
 
       return (
         <div className="flex flex-row gap-4">
-          <DeletePatient id={row.original.id} />
+          <UpdateDoctor {...row.original} />
+          <DeleteDoctor id={row.original.user.id} />
         </div>
       );
     },

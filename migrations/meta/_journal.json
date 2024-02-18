@@ -15,6 +15,34 @@
       "when": 1707929471315,
       "tag": "0001_ambiguous_katie_power",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1708229249823,
+      "tag": "0002_old_black_knight",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1708237306074,
+      "tag": "0003_flashy_baron_strucker",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "5",
+      "when": 1708238146504,
+      "tag": "0004_superb_nova",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "5",
+      "when": 1708239716474,
+      "tag": "0005_past_valeria_richards",
+      "breakpoints": true
     }
   ]
 }

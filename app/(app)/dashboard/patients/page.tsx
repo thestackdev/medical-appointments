@@ -3,9 +3,26 @@ import { users } from "@/database/schema";
 import { desc, eq } from "drizzle-orm";
 import { DataTable } from "@/components/ui/data-table";
 import { columns as userColumns } from "@/utils/columns/user-columns";
-import CreateDoctor from "@/components/create-doctor";
+import { checkSignedIn } from "@/helpers/session";
 
 export default async function Page() {
+  const session = await checkSignedIn();
+
+  if (!session)
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-background">
+        <h1>You are not signed in</h1>
+      </div>
+    );
+
+  if (session.accountType !== "admin") {
+    return (
+      <div className="flex items-center justify-center h-screen w-full bg-background">
+        <h1>Only admin can view patients</h1>
+      </div>
+    );
+  }
+
   const usersResponse = await db.query.users.findMany({
     where: eq(users.accountType, "patient"),
     orderBy: desc(users.createdAt),
