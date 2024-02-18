@@ -20,9 +20,9 @@ export const speciality = pgEnum("speciality", doctorsSpeciality);
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  displayName: text("display_name"),
-  email: varchar("email"),
-  password: varchar("password"),
+  displayName: text("display_name").notNull(),
+  email: varchar("email").unique().notNull(),
+  password: varchar("password").notNull(),
   accountType: accountType("account_type")
     .notNull()
     .default("patient" as const),
@@ -55,8 +55,16 @@ export const doctors = pgTable("doctors", {
 
 export const doctorAppointments = pgTable("doctor_appointments", {
   id: uuid("id").primaryKey().notNull().defaultRandom(),
-  doctorId: uuid("doctor_id").notNull(),
-  patientId: uuid("patient_id").notNull(),
+  doctorId: uuid("doctor_id")
+    .notNull()
+    .references(() => doctors.id, {
+      onDelete: "cascade",
+    }),
+  patientId: uuid("patient_id")
+    .notNull()
+    .references(() => users.id, {
+      onDelete: "cascade",
+    }),
   prescription: text("prescription"),
   appointmentDate: timestamp("appointment_date", {
     withTimezone: true,

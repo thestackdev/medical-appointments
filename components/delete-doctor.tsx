@@ -42,7 +42,9 @@ export default function DeleteDoctor({ id }: DeleteDoctorProps) {
   return (
     <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
       <DialogTrigger>
-        <Trash2 className="cursor-pointer" size={19} />
+        <Button variant="destructive" className="w-full">
+          Delete
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

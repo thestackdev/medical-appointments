@@ -7,6 +7,7 @@ import { DoctorAppointmentWithDoctorWithUser } from "@/types";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import db from "@/database";
+import VideoCall from "@/components/video-call";
 
 export default async function Page({
   params,
@@ -71,7 +72,7 @@ export default async function Page({
             </CardContent>
           </Card>
           <div className="flex gap-4 mt-4">
-            <Button variant="default">Join Video Call</Button>
+            <VideoCall />
             <Prescription
               prescription={response.prescription}
               id={response.id}

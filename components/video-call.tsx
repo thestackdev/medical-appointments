@@ -10,8 +10,8 @@ export default function VideoCall() {
 
   return (
     <div>
-      <Button onClick={handleJoin}>
-        {user?.role === "doctor" ? "Start" : "Join"} Video Call
+      <Button disabled onClick={handleJoin}>
+        {user?.accountType === "doctor" ? "Start" : "Join"} Video Call
       </Button>
     </div>
   );
