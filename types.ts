@@ -21,3 +21,8 @@ export type DoctorAppointment = z.infer<typeof selectDoctorAppointmentsSchema>;
 export type DoctorWithUser = Doctors & {
   user: User;
 };
+
+export type DoctorAppointmentWithDoctorWithUser = DoctorAppointment & {
+  doctor: DoctorWithUser & { user: User };
+  patient: User;
+};

@@ -1,8 +1,8 @@
 import db from "@/database";
-import { doctors, users } from "@/database/schema";
+import { doctorAppointments, doctors, users } from "@/database/schema";
 import { desc, eq } from "drizzle-orm";
 import { DataTable } from "@/components/ui/data-table";
-import { columns as doctorAppointments } from "@/utils/columns/doctor-appointments-columns";
+import { columns as doctorAppointmentsColumns } from "@/utils/columns/doctor-appointments-columns";
 import { checkSignedIn } from "@/helpers/session";
 import BookAppointment from "@/components/book-appointment";
 
@@ -32,13 +32,18 @@ export default async function Page() {
   });
 
   const data = await db.query.doctorAppointments.findMany({
-    where: eq(users.id, session.id),
+    where: eq(doctorAppointments.patientId, session.id),
     orderBy: desc(users.createdAt),
     with: {
-      patient: true,
-      doctor: true,
+      doctor: {
+        with: {
+          user: true,
+        },
+      },
     },
   });
+
+  console.log("data", data);
 
   return (
     <div>
@@ -50,7 +55,7 @@ export default async function Page() {
               <BookAppointment doctors={doctorsResponse} />
             )}
           </div>
-          <DataTable columns={doctorAppointments} data={data} />
+          <DataTable columns={doctorAppointmentsColumns} data={data} />
         </div>
       </main>
     </div>

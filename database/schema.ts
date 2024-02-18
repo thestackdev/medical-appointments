@@ -89,9 +89,9 @@ export const doctorAppointmentsPatientRelation = relations(
 export const doctorAppointmentsDoctorRelation = relations(
   doctorAppointments,
   ({ one }) => ({
-    doctor: one(users, {
+    doctor: one(doctors, {
       fields: [doctorAppointments.doctorId],
-      references: [users.id],
+      references: [doctors.id],
     }),
   })
 );
