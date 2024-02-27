@@ -37,6 +37,15 @@ export default function CreateDoctor() {
   });
   const router = useRouter();
 
+  function resetForm() {
+    setForm({
+      displayName: "",
+      email: "",
+      password: "",
+      speciality: doctorsSpeciality[0] as string,
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -48,12 +57,19 @@ export default function CreateDoctor() {
     } finally {
       setLoading(false);
       setOpen(false);
+      resetForm();
       router.refresh();
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        resetForm();
+      }}
+    >
       <DialogTrigger>
         <Button>Create</Button>
       </DialogTrigger>

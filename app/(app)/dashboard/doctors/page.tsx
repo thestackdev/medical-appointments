@@ -26,11 +26,11 @@ export default async function Page() {
 
   return (
     <div>
-      <main className="max-w-screen-xl mx-auto p-4 mt-8">
+      <main className="mx-auto mt-8 max-w-screen-xl p-4">
         <div>
           <div className="flex w-full items-center justify-between">
-            <h1 className="text-2xl font-bold mt-8 mb-4">Doctors</h1>
-            {session?.accountType === "admin" && <CreateDoctor />}
+            <h1 className="mb-4 mt-8 text-2xl font-bold">Doctors</h1>
+            {session?.accountType === "patient" && <CreateDoctor />}
           </div>
           <DataTable columns={doctorColumns} data={doctorsResponse} />
         </div>

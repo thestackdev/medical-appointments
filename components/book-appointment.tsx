@@ -1,5 +1,7 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
   Dialog,
   DialogContent,
@@ -9,11 +11,11 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
-import axios from "axios";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
-import { DoctorWithUser } from "@/types";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import {
   Select,
   SelectContent,
@@ -21,18 +23,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
-import { Calendar as CalendarIcon } from "lucide-react";
-import { format } from "date-fns";
-import { cn } from "@/lib/utils";
 import { TimePicker } from "@/components/ui/time-picker";
 import { useToast } from "@/components/ui/use-toast";
 import { handleErrors } from "@/helpers/errors";
+import { cn } from "@/lib/utils";
+import { DoctorWithUser } from "@/types";
+import axios from "axios";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface BookAppointmentProps {
   doctors: DoctorWithUser[];
@@ -48,6 +48,13 @@ export default function BookAppointment({ doctors }: BookAppointmentProps) {
   const router = useRouter();
   const { toast } = useToast();
 
+  function resetForm() {
+    setForm({
+      doctorId: "",
+      appointmentDate: new Date(),
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setLoading(true);
@@ -60,12 +67,19 @@ export default function BookAppointment({ doctors }: BookAppointmentProps) {
     } finally {
       setLoading(false);
       setOpen(false);
+      resetForm();
       router.refresh();
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={(isOpen) => setOpen(isOpen)}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        resetForm();
+      }}
+    >
       <DialogTrigger>
         <Button>Book Appointment</Button>
       </DialogTrigger>
@@ -107,7 +121,7 @@ export default function BookAppointment({ doctors }: BookAppointmentProps) {
                       variant={"outline"}
                       className={cn(
                         "w-[280px] justify-start text-left font-normal",
-                        !form.appointmentDate && "text-muted-foreground"
+                        !form.appointmentDate && "text-muted-foreground",
                       )}
                     >
                       <CalendarIcon className="mr-2 h-4 w-4" />
@@ -128,7 +142,7 @@ export default function BookAppointment({ doctors }: BookAppointmentProps) {
                       }}
                       initialFocus
                     />
-                    <div className="p-3 border-t border-border">
+                    <div className="border-border border-t p-3">
                       <TimePicker
                         setDate={(date) => {
                           if (!date) return;
@@ -146,6 +160,7 @@ export default function BookAppointment({ doctors }: BookAppointmentProps) {
                 <Button
                   variant="destructive"
                   className="mt-4"
+                  type="button"
                   onClick={() => setOpen(false)}
                 >
                   Cancel

@@ -12,8 +12,17 @@ import { ArrowRight, GraduationCap, Users } from "lucide-react";
 import { columns as doctorColumns } from "@/utils/columns/doctors-columns";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { checkSignedIn } from "@/helpers/session";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
+
+  const session = await checkSignedIn();
+
+  if (!session) {
+    return redirect("/login");
+  }
+
   const [{ count: totalDoctors }] = await db
     .select({ count: sql<number>`count(*)` })
     .from(doctors);
@@ -70,12 +79,14 @@ export default async function Page() {
       <div>
         <div className="flex items-center justify-between w-full">
           <h1 className="text-2xl font-bold mt-8 mb-4">Our Doctors</h1>
-          <Link href="/dashboard/appointments">
-            <Button className="mt-4">
-              My Appointments
-              <ArrowRight className="ml-2" size={20} />
-            </Button>
-          </Link>
+          {session.accountType !== 'admin' && (
+            <Link href="/dashboard/appointments">
+              <Button className="mt-4">
+                My Appointments
+                <ArrowRight className="ml-2" size={20} />
+              </Button>
+            </Link>
+          )}
         </div>
         <DataTable columns={doctorColumns} data={doctorsResponseWithUser} />
       </div>

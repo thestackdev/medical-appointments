@@ -17,11 +17,28 @@ export async function POST(request: Request) {
     if (!body.doctorId || !body.appointmentDate) {
       return NextResponse.json(
         { error: "doctorId and appointmentDate are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     const appointmentDate = new Date(body.appointmentDate);
+
+    const userAvailable = await db.query.doctorAppointments.findFirst({
+      where: and(
+        eq(doctorAppointments.patientId, session.id),
+        sql`
+            appointment_date >= ${appointmentDate.toISOString()}::timestamptz - interval '1 hour' AND
+            appointment_date <= ${appointmentDate.toISOString()}::timestamptz + interval '1 hour'
+          `,
+      ),
+    });
+
+    if (!userAvailable) {
+      return NextResponse.json(
+        { error: "You already have an appointment at this time" },
+        { status: 400 },
+      );
+    }
 
     const isAvailable = await db.query.doctorAppointments.findFirst({
       where: and(
@@ -29,14 +46,14 @@ export async function POST(request: Request) {
         sql`
             appointment_date >= ${appointmentDate.toISOString()}::timestamptz - interval '1 hour' AND
             appointment_date <= ${appointmentDate.toISOString()}::timestamptz + interval '1 hour'
-          `
+          `,
       ),
     });
 
     if (isAvailable) {
       return NextResponse.json(
         { error: "Doctor is not available at this time" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -69,7 +86,7 @@ export async function PATCH(request: Request) {
     if (!body.id || !body.prescription) {
       return NextResponse.json(
         { error: "id and prescription are required" },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
