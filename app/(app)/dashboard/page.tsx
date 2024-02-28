@@ -1,3 +1,4 @@
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardDescription,
@@ -7,16 +8,17 @@ import {
 import { DataTable } from "@/components/ui/data-table";
 import db from "@/database";
 import { doctors, users } from "@/database/schema";
-import { desc, eq, sql } from "drizzle-orm";
-import { ArrowRight, GraduationCap, Users } from "lucide-react";
-import { columns as doctorColumns } from "@/utils/columns/doctors-columns";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { checkSignedIn } from "@/helpers/session";
+import {
+  columnsForUsers,
+  columns as doctorColumns,
+} from "@/utils/columns/doctors-columns";
+import { eq, sql } from "drizzle-orm";
+import { ArrowRight, GraduationCap, Users } from "lucide-react";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-
   const session = await checkSignedIn();
 
   if (!session) {
@@ -79,7 +81,7 @@ export default async function Page() {
       <div>
         <div className="flex items-center justify-between w-full">
           <h1 className="text-2xl font-bold mt-8 mb-4">Our Doctors</h1>
-          {session.accountType !== 'admin' && (
+          {session.accountType !== "admin" && (
             <Link href="/dashboard/appointments">
               <Button className="mt-4">
                 My Appointments
@@ -88,7 +90,11 @@ export default async function Page() {
             </Link>
           )}
         </div>
-        <DataTable columns={doctorColumns} data={doctorsResponseWithUser} />
+        {session.accountType === "admin" ? (
+          <DataTable columns={doctorColumns} data={doctorsResponseWithUser} />
+        ) : (
+          <DataTable columns={columnsForUsers} data={doctorsResponseWithUser} />
+        )}
       </div>
     </main>
   );

@@ -43,3 +43,18 @@ export const columns: ColumnDef<DoctorWithUser>[] = [
     },
   },
 ];
+
+export const columnsForUsers: ColumnDef<DoctorWithUser>[] = [
+  {
+    accessorKey: "displayName",
+    header: "Display Name",
+  },
+  {
+    accessorKey: "email",
+    header: "Email",
+  },
+  {
+    accessorKey: "speciality",
+    header: "Speciality",
+  },
+];

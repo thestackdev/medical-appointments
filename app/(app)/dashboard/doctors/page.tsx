@@ -1,10 +1,13 @@
-import db from "@/database";
-import { doctors, users } from "@/database/schema";
-import { desc, eq } from "drizzle-orm";
-import { DataTable } from "@/components/ui/data-table";
-import { columns as doctorColumns } from "@/utils/columns/doctors-columns";
 import CreateDoctor from "@/components/create-doctor";
+import { DataTable } from "@/components/ui/data-table";
+import db from "@/database";
+import { doctors } from "@/database/schema";
 import { checkSignedIn } from "@/helpers/session";
+import {
+  columnsForUsers,
+  columns as doctorColumns,
+} from "@/utils/columns/doctors-columns";
+import { desc } from "drizzle-orm";
 
 export default async function Page() {
   const session = await checkSignedIn();
@@ -30,9 +33,13 @@ export default async function Page() {
         <div>
           <div className="flex w-full items-center justify-between">
             <h1 className="mb-4 mt-8 text-2xl font-bold">Doctors</h1>
-            {session?.accountType === "patient" && <CreateDoctor />}
+            {session?.accountType === "admin" && <CreateDoctor />}
           </div>
-          <DataTable columns={doctorColumns} data={doctorsResponse} />
+          {session?.accountType === "admin" ? (
+            <DataTable columns={doctorColumns} data={doctorsResponse} />
+          ) : (
+            <DataTable columns={columnsForUsers} data={doctorsResponse} />
+          )}
         </div>
       </main>
     </div>
