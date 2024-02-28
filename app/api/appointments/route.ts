@@ -1,6 +1,7 @@
 import db from "@/database";
 import { doctorAppointments } from "@/database/schema";
 import { checkSignedIn } from "@/helpers/session";
+import { log } from "console";
 import { and, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
 
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
       ),
     });
 
-    if (!userAvailable) {
+    if (userAvailable) {
       return NextResponse.json(
         { error: "You already have an appointment at this time" },
         { status: 400 },
