@@ -32,7 +32,7 @@ export default function Page() {
 
   return (
     <main className="max-w-screen-sm mx-auto p-4 mt-8">
-      <h1 className="text-2xl font-bold">Login</h1>
+      <h1 className="text-2xl font-bold text-center ">LOGIN</h1>
       <Card className="mt-4 p-4">
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -40,7 +40,7 @@ export default function Page() {
             <Input
               className="mt-2"
               type="email"
-              placeholder="user@example.com"
+              placeholder="user@gmail.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -48,24 +48,31 @@ export default function Page() {
           <div className="mb-4">
             <div className="w-full flex justify-between">
               <Label>Password</Label>
-              <Link href="/forgot-password">
-                <span className="text-blue-500 cursor-pointer text-sm">
-                  Forgot Password?
-                </span>
-              </Link>
+              
             </div>
-            <Input
-              className="mt-2"
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
+            <div className= "flex flex-col">
+              <Input
+                className="mt-2"
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <Link href="/forgot-password">
+              <span className="text-blue-500 cursor-pointer text-sm float-right mt-2 ">
+                    Forgot Password?
+                  </span>
+                </Link>
+              
+            </div>
           </div>
-          <Button disabled={loading} className="mt-4 w-full">
-            {loading && <Loader className="mr-2 animate-spin" size={16} />}
-            Login
-          </Button>
+          
+          <div className="w-full flex justify-center">
+            <Button disabled={loading} className="mt-4 w-1/2  items-center">
+              {loading && <Loader className="mr-2 animate-spin" size={16} />}
+              Login
+            </Button>
+          </div>
         </form>
         <div className="mt-4 text-center">
           <span>
