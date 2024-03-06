@@ -1,13 +1,12 @@
-import Prescription from "@/components/prescription";
 import DeleteAppointment from "@/components/delete-appointment";
-import { Button } from "@/components/ui/button";
+import Prescription from "@/components/prescription";
 import { Card, CardContent } from "@/components/ui/card";
+import VideoCall from "@/components/video-call";
+import db from "@/database";
 import { doctorAppointments } from "@/database/schema";
 import { DoctorAppointmentWithDoctorWithUser } from "@/types";
 import { eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
-import db from "@/database";
-import VideoCall from "@/components/video-call";
 
 export default async function Page({
   params,
@@ -72,7 +71,7 @@ export default async function Page({
             </CardContent>
           </Card>
           <div className="flex gap-4 mt-4">
-            <VideoCall />
+            <VideoCall appointmentId={response.id} />
             <Prescription
               prescription={response.prescription}
               id={response.id}

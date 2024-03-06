@@ -2,15 +2,23 @@
 
 import { Button } from "@/components/ui/button";
 import useUserStore from "@/hooks/use-user-store";
+import { useRouter } from "next/navigation";
 
-export default function VideoCall() {
+type VideoCallProps = {
+  appointmentId: string;
+};
+
+export default function VideoCall({ appointmentId }: VideoCallProps) {
   const { user } = useUserStore();
+  const router = useRouter();
 
-  async function handleJoin() {}
+  async function handleJoin() {
+    router.push(`/dashboard/meet?room_id=${appointmentId}`);
+  }
 
   return (
     <div>
-      <Button disabled onClick={handleJoin}>
+      <Button onClick={handleJoin}>
         {user?.accountType === "doctor" ? "Start" : "Join"} Video Call
       </Button>
     </div>
