@@ -10,9 +10,13 @@ import { redirect } from "next/navigation";
 
 export default async function Page({
   params,
+  searchParams: { openPrescription },
 }: {
   params: { appointment: string };
+  searchParams: { openPrescription: boolean };
 }) {
+  console.log("params", openPrescription);
+
   const response = (await db.query.doctorAppointments.findFirst({
     where: eq(doctorAppointments.id, params.appointment),
     with: {
@@ -75,6 +79,7 @@ export default async function Page({
             <Prescription
               prescription={response.prescription}
               id={response.id}
+              defaultOpen={openPrescription}
             />
             <DeleteAppointment id={response.id} name="Delete Appointment" />
           </div>

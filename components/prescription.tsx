@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -10,7 +11,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,11 +19,16 @@ import { Textarea } from "./ui/textarea";
 interface PrescriptionProps {
   id: string;
   prescription: string | null;
+  defaultOpen?: boolean;
 }
 
-export default function Prescription({ id, prescription }: PrescriptionProps) {
+export default function Prescription({
+  id,
+  prescription,
+  defaultOpen = false,
+}: PrescriptionProps) {
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(defaultOpen);
   const [form, setForm] = useState({
     id,
     prescription: "",

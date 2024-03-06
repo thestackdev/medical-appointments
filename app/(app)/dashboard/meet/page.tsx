@@ -11,13 +11,15 @@ import {
 } from "@livekit/components-react";
 import "@livekit/components-styles";
 import { Track } from "livekit-client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function Page() {
   const searchParams = useSearchParams();
-  const { user } = useUserStore((state) => state);
   const roomId = searchParams.get("room_id");
+
+  const { user } = useUserStore((state) => state);
+  const router = useRouter();
 
   const [token, setToken] = useState("");
 
@@ -28,6 +30,21 @@ export default function Page() {
       );
       const data = await resp.json();
       setToken(data.token);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function handleDisconnect() {
+    try {
+      console.log("disconnected");
+      if (user?.accountType === "doctor") {
+        router.replace(
+          `/dashboard/appointments/${roomId}?openPrescription=true`
+        );
+      } else {
+        router.replace(`/dashboard/appointments/${roomId}`);
+      }
     } catch (e) {
       console.error(e);
     }
@@ -53,6 +70,7 @@ export default function Page() {
       token={token}
       serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_URL}
       data-lk-theme="default"
+      onDisconnected={handleDisconnect}
       style={{ height: "100dvh" }}
     >
       <MyVideoConference />
