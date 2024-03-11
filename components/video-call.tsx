@@ -6,9 +6,13 @@ import { useRouter } from "next/navigation";
 
 type VideoCallProps = {
   appointmentId: string;
+  isEnabled: boolean;
 };
 
-export default function VideoCall({ appointmentId }: VideoCallProps) {
+export default function VideoCall({
+  appointmentId,
+  isEnabled,
+}: VideoCallProps) {
   const { user } = useUserStore();
   const router = useRouter();
 
@@ -18,7 +22,7 @@ export default function VideoCall({ appointmentId }: VideoCallProps) {
 
   return (
     <div>
-      <Button onClick={handleJoin}>
+      <Button onClick={handleJoin} disabled={isEnabled}>
         {user?.accountType === "doctor" ? "Start" : "Join"} Video Call
       </Button>
     </div>

@@ -1,6 +1,7 @@
 import { relations } from "drizzle-orm";
 import {
   boolean,
+  integer,
   pgEnum,
   pgTable,
   text,
@@ -26,6 +27,8 @@ export const users = pgTable("users", {
   accountType: accountType("account_type")
     .notNull()
     .default("patient" as const),
+  age: integer("age").default(0),
+  gender: varchar("gender").default(""),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),

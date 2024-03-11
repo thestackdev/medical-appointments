@@ -43,6 +43,13 @@
       "when": 1708239716474,
       "tag": "0005_past_valeria_richards",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1710178120492,
+      "tag": "0006_chubby_frightful_four",
+      "breakpoints": true
     }
   ]
 }

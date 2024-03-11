@@ -24,6 +24,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { RadioGroup, RadioGroupItem } from "./ui/radio-group";
 
 export default function CreateDoctor() {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,8 @@ export default function CreateDoctor() {
   const [form, setForm] = useState({
     displayName: "",
     email: "",
+    age: 0,
+    gender: "male",
     password: "",
     speciality: doctorsSpeciality[0] as string,
   });
@@ -41,6 +44,8 @@ export default function CreateDoctor() {
     setForm({
       displayName: "",
       email: "",
+      age: 0,
+      gender: "male",
       password: "",
       speciality: doctorsSpeciality[0] as string,
     });
@@ -50,8 +55,7 @@ export default function CreateDoctor() {
     e.preventDefault();
     setLoading(true);
     try {
-      const response = await axios.post("/api/doctors", form);
-      console.log(response.data);
+      await axios.post("/api/doctors", form);
     } catch (error) {
       console.log(error);
     } finally {
@@ -109,6 +113,51 @@ export default function CreateDoctor() {
                   onChange={(e) => setForm({ ...form, email: e.target.value })}
                   className="mt-1"
                 />
+              </div>
+            </DialogDescription>
+            <DialogDescription>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="coupon-expiry" className="mt-4">
+                  Age
+                </Label>
+                <Input
+                  type="number"
+                  required
+                  id="age"
+                  placeholder="Age"
+                  value={form.age}
+                  onChange={(e) =>
+                    setForm({ ...form, age: Number(e.target.value) })
+                  }
+                  className="mt-1"
+                />
+              </div>
+            </DialogDescription>
+            <DialogDescription>
+              <div className="grid w-full max-w-sm items-center gap-1.5">
+                <Label htmlFor="coupon-expiry" className="mt-4">
+                  Password
+                </Label>
+                <RadioGroup
+                  defaultValue={form.gender}
+                  className="mt-4 flex flex-row gap-4"
+                  onValueChange={(value) =>
+                    setForm({ ...form, gender: value as string })
+                  }
+                >
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="male" id="male" />
+                    <Label htmlFor="male">Male</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="female" id="female" />
+                    <Label htmlFor="female">Female</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <RadioGroupItem value="other" id="other" />
+                    <Label htmlFor="other">Other</Label>
+                  </div>
+                </RadioGroup>
               </div>
             </DialogDescription>
             <DialogDescription>

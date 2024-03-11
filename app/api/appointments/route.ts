@@ -1,9 +1,41 @@
 import db from "@/database";
 import { doctorAppointments } from "@/database/schema";
 import { checkSignedIn } from "@/helpers/session";
-import { log } from "console";
 import { and, eq, sql } from "drizzle-orm";
 import { NextResponse } from "next/server";
+
+export async function GET(request: Request) {
+  try {
+    const session = await checkSignedIn();
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const searchParams = new URL(request.url).searchParams;
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json({ error: "id is required" }, { status: 400 });
+    }
+
+    const response = await db.query.doctorAppointments.findFirst({
+      where: eq(doctorAppointments.id, id),
+      with: {
+        doctor: {
+          with: {
+            user: true,
+          },
+        },
+        patient: true,
+      },
+    });
+
+    return NextResponse.json(response, { status: 200 });
+  } catch (error) {
+    const e = error as Error;
+    return NextResponse.json({ error: e.message }, { status: 500 });
+  }
+}
 
 export async function POST(request: Request) {
   try {
@@ -18,7 +50,7 @@ export async function POST(request: Request) {
     if (!body.doctorId || !body.appointmentDate) {
       return NextResponse.json(
         { error: "doctorId and appointmentDate are required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -30,14 +62,14 @@ export async function POST(request: Request) {
         sql`
             appointment_date >= ${appointmentDate.toISOString()}::timestamptz - interval '1 hour' AND
             appointment_date <= ${appointmentDate.toISOString()}::timestamptz + interval '1 hour'
-          `,
+          `
       ),
     });
 
     if (userAvailable) {
       return NextResponse.json(
         { error: "You already have an appointment at this time" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -47,14 +79,14 @@ export async function POST(request: Request) {
         sql`
             appointment_date >= ${appointmentDate.toISOString()}::timestamptz - interval '1 hour' AND
             appointment_date <= ${appointmentDate.toISOString()}::timestamptz + interval '1 hour'
-          `,
+          `
       ),
     });
 
     if (isAvailable) {
       return NextResponse.json(
         { error: "Doctor is not available at this time" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -87,7 +119,7 @@ export async function PATCH(request: Request) {
     if (!body.id || !body.prescription) {
       return NextResponse.json(
         { error: "id and prescription are required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 

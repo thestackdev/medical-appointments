@@ -10,11 +10,16 @@ import { Loader } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 export default function Page() {
-  const [displayName, setDisplayName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({
+    displayName: "",
+    email: "",
+    age: 0,
+    gender: "male",
+    password: "",
+  });
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -22,7 +27,7 @@ export default function Page() {
     e.preventDefault();
     try {
       setLoading(true);
-      await axios.post("/api/register", { displayName, email, password });
+      await axios.post("/api/register", form);
       router.refresh();
     } catch (error: any) {
       toast({ title: "Registration Failed", description: error?.message });
@@ -42,8 +47,10 @@ export default function Page() {
               className="mt-2"
               type="text"
               placeholder="John Doe"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
+              value={form.displayName}
+              onChange={(e) =>
+                setForm({ ...form, displayName: e.target.value })
+              }
             />
           </div>
           <div className="mb-4">
@@ -52,9 +59,44 @@ export default function Page() {
               className="mt-2"
               type="email"
               placeholder="user@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={form.email}
+              onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
+          </div>
+          <div className="mb-4">
+            <Label>Age</Label>
+            <Input
+              className="mt-2"
+              type="number"
+              placeholder="Age"
+              value={form.age}
+              onChange={(e) =>
+                setForm({ ...form, age: Number(e.target.value) })
+              }
+            />
+          </div>
+          <div className="mb-4">
+            <Label>Gender</Label>
+            <RadioGroup
+              defaultValue={form.gender}
+              className="mt-4 flex flex-row gap-4"
+              onValueChange={(value) =>
+                setForm({ ...form, gender: value as string })
+              }
+            >
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="male" id="male" />
+                <Label htmlFor="male">Male</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="female" id="female" />
+                <Label htmlFor="female">Female</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="other" id="other" />
+                <Label htmlFor="other">Other</Label>
+              </div>
+            </RadioGroup>
           </div>
           <div className="mb-4">
             <Label>Password</Label>
@@ -62,8 +104,8 @@ export default function Page() {
               className="mt-2"
               type="password"
               placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={form.password}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
           </div>
           <Button disabled={loading} className="mt-4 w-full">

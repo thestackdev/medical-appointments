@@ -1,12 +1,16 @@
 import DeleteAppointment from "@/components/delete-appointment";
 import Prescription from "@/components/prescription";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import VideoCall from "@/components/video-call";
 import db from "@/database";
 import { doctorAppointments } from "@/database/schema";
+import { checkSignedIn } from "@/helpers/session";
 import { DoctorAppointmentWithDoctorWithUser } from "@/types";
 import { eq } from "drizzle-orm";
+import Link from "next/link";
 import { redirect } from "next/navigation";
+import PDF from "../../pdf/page";
 
 export default async function Page({
   params,
@@ -15,8 +19,7 @@ export default async function Page({
   params: { appointment: string };
   searchParams: { openPrescription: boolean };
 }) {
-  console.log("params", openPrescription);
-
+  const session = await checkSignedIn();
   const response = (await db.query.doctorAppointments.findFirst({
     where: eq(doctorAppointments.id, params.appointment),
     with: {
@@ -29,9 +32,18 @@ export default async function Page({
     },
   })) as DoctorAppointmentWithDoctorWithUser;
 
-  if (!response) {
+  if (!response || !session) {
     redirect("/dashboard/appointments");
   }
+
+  function isVideoCallEnabledHandler() {
+    const appointmentDate = new Date(response.appointmentDate);
+    appointmentDate.setHours(appointmentDate.getHours() + 1);
+    const now = new Date();
+    return now < appointmentDate;
+  }
+
+  const isVideoCallEnabled = isVideoCallEnabledHandler();
 
   return (
     <div>
@@ -75,12 +87,19 @@ export default async function Page({
             </CardContent>
           </Card>
           <div className="flex gap-4 mt-4">
-            <VideoCall appointmentId={response.id} />
-            <Prescription
-              prescription={response.prescription}
-              id={response.id}
-              defaultOpen={openPrescription}
+            <VideoCall
+              appointmentId={response.id}
+              isEnabled={isVideoCallEnabled}
             />
+            {session.accountType === "doctor" ? (
+              <Prescription
+                prescription={response.prescription}
+                id={response.id}
+                defaultOpen={openPrescription}
+              />
+            ) : (
+              <PDF id={response.id} />
+            )}
             <DeleteAppointment id={response.id} name="Delete Appointment" />
           </div>
         </div>

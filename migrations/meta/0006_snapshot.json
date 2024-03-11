@@ -1,0 +1,299 @@
+{
+  "id": "30096f50-dd2a-4659-99f7-878c9338b041",
+  "prevId": "76374bd8-ff9a-4bc7-a83a-3ac8a43d65a1",
+  "version": "5",
+  "dialect": "pg",
+  "tables": {
+    "doctor_appointments": {
+      "name": "doctor_appointments",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "doctor_id": {
+          "name": "doctor_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "patient_id": {
+          "name": "patient_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "prescription": {
+          "name": "prescription",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "appointment_date": {
+          "name": "appointment_date",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "doctor_appointments_doctor_id_doctors_id_fk": {
+          "name": "doctor_appointments_doctor_id_doctors_id_fk",
+          "tableFrom": "doctor_appointments",
+          "tableTo": "doctors",
+          "columnsFrom": [
+            "doctor_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "doctor_appointments_patient_id_users_id_fk": {
+          "name": "doctor_appointments_patient_id_users_id_fk",
+          "tableFrom": "doctor_appointments",
+          "tableTo": "users",
+          "columnsFrom": [
+            "patient_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "doctors": {
+      "name": "doctors",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "is_available": {
+          "name": "is_available",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "default": true
+        },
+        "speciality": {
+          "name": "speciality",
+          "type": "speciality",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'dentist'"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "doctors_user_id_users_id_fk": {
+          "name": "doctors_user_id_users_id_fk",
+          "tableFrom": "doctors",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "email": {
+          "name": "email",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "password": {
+          "name": "password",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "account_type": {
+          "name": "account_type",
+          "type": "accountType",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "'patient'"
+        },
+        "age": {
+          "name": "age",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "default": 0
+        },
+        "gender": {
+          "name": "gender",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "''"
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp with time zone",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "users_email_unique": {
+          "name": "users_email_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "email"
+          ]
+        }
+      }
+    }
+  },
+  "enums": {
+    "accountType": {
+      "name": "accountType",
+      "values": {
+        "admin": "admin",
+        "doctor": "doctor",
+        "patient": "patient"
+      }
+    },
+    "speciality": {
+      "name": "speciality",
+      "values": {
+        "dentist": "dentist",
+        "cardiologist": "cardiologist",
+        "dermatologist": "dermatologist",
+        "endocrinologist": "endocrinologist",
+        "gastroenterologist": "gastroenterologist",
+        "gynecologist": "gynecologist",
+        "hematologist": "hematologist",
+        "infectiousDiseaseSpecialist": "infectiousDiseaseSpecialist",
+        "nephrologist": "nephrologist",
+        "neurologist": "neurologist",
+        "oncologist": "oncologist",
+        "ophthalmologist": "ophthalmologist",
+        "osteopath": "osteopath",
+        "otolaryngologist": "otolaryngologist",
+        "pediatrician": "pediatrician",
+        "physiatrist": "physiatrist",
+        "plasticSurgeon": "plasticSurgeon",
+        "podiatrist": "podiatrist",
+        "psychiatrist": "psychiatrist",
+        "pulmonologist": "pulmonologist",
+        "radiologist": "radiologist",
+        "rheumatologist": "rheumatologist",
+        "urologist": "urologist",
+        "allergist": "allergist",
+        "anesthesiologist": "anesthesiologist",
+        "cardiacElectrophysiologist": "cardiacElectrophysiologist",
+        "criticalCareMedicineSpecialist": "criticalCareMedicineSpecialist",
+        "emergencyMedicineSpecialist": "emergencyMedicineSpecialist",
+        "familyMedicinePhysician": "familyMedicinePhysician",
+        "hospitalist": "hospitalist",
+        "internist": "internist",
+        "medicalGeneticist": "medicalGeneticist",
+        "obstetrician": "obstetrician",
+        "occupationalMedicineSpecialist": "occupationalMedicineSpecialist",
+        "painManagementSpecialist": "painManagementSpecialist",
+        "pathologist": "pathologist",
+        "physicalMedicineAndRehabilitationSpecialist": "physicalMedicineAndRehabilitationSpecialist",
+        "preventiveMedicineSpecialist": "preventiveMedicineSpecialist",
+        "sleepMedicineSpecialist": "sleepMedicineSpecialist",
+        "sportsMedicineSpecialist": "sportsMedicineSpecialist",
+        "surgeon": "surgeon",
+        "vascularSurgeon": "vascularSurgeon",
+        "veterinarian": "veterinarian",
+        "virologist": "virologist",
+        "other": "other"
+      }
+    }
+  },
+  "schemas": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
