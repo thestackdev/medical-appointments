@@ -38,7 +38,7 @@ export default async function Page({
 
   function isVideoCallEnabledHandler() {
     const appointmentDate = new Date(response.appointmentDate);
-    appointmentDate.setHours(appointmentDate.getHours() + 1);
+    appointmentDate.setHours(appointmentDate.getMinutes() + 30);
     const now = new Date();
     return now < appointmentDate;
   }
