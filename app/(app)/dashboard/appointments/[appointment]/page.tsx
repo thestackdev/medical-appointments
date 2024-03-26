@@ -12,6 +12,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import PDF from "../../pdf/page";
 import moment from "moment";
+import ClientTimeComponent from "@/components/client-time-component";
 
 export default async function Page({
   params,
@@ -76,10 +77,9 @@ export default async function Page({
                     {new Date(response.appointmentDate).toLocaleDateString()}
                   </p>
                 </div>
-                <div>
-                  <h2 className="text-lg font-bold">Time</h2>
-                  <p>{moment(response.appointmentDate).format("hh:mm A")}</p>
-                </div>
+                <ClientTimeComponent
+                  appointmentDate={response.appointmentDate}
+                />
               </div>
               <div className="mt-4">
                 <h2 className="text-lg font-bold">Prescription</h2>
