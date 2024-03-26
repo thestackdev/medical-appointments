@@ -11,6 +11,7 @@ import { eq } from "drizzle-orm";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import PDF from "../../pdf/page";
+import moment from "moment";
 
 export default async function Page({
   params,
@@ -77,7 +78,7 @@ export default async function Page({
                 </div>
                 <div>
                   <h2 className="text-lg font-bold">Time</h2>
-                  <p>{formatDate(new Date(response.appointmentDate))}</p>
+                  <p>{moment(response.appointmentDate).format("hh:mm A")}</p>
                 </div>
               </div>
               <div className="mt-4">
