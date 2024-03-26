@@ -37,11 +37,11 @@ export default function Page() {
   };
 
   return (
-    <main className="max-w-screen-sm mx-auto p-4 mt-8">
-      <h1 className="text-2xl font-bold">Register</h1>
-      <Card className="mt-4 p-4">
+    <main className="max-w-screen-sm mx-auto p-4 mt-8 rounded-3xl">
+      <h1 className="text-2xl font-bold text-center text-black">REGISTER</h1>
+      <Card className="mt-4 p-4 border-0">
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
+          <div className="mb-4 text-black">
             <Label>Display Name</Label>
             <Input
               className="mt-2"
@@ -53,7 +53,7 @@ export default function Page() {
               }
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 text-black">
             <Label>Email</Label>
             <Input
               className="mt-2"
@@ -63,7 +63,7 @@ export default function Page() {
               onChange={(e) => setForm({ ...form, email: e.target.value })}
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 text-black">
             <Label>Age</Label>
             <Input
               className="mt-2"
@@ -75,7 +75,7 @@ export default function Page() {
               }
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 text-black">
             <Label>Gender</Label>
             <RadioGroup
               defaultValue={form.gender}
@@ -98,7 +98,7 @@ export default function Page() {
               </div>
             </RadioGroup>
           </div>
-          <div className="mb-4">
+          <div className="mb-4 text-black">
             <Label>Password</Label>
             <Input
               className="mt-2"
@@ -108,7 +108,7 @@ export default function Page() {
               onChange={(e) => setForm({ ...form, password: e.target.value })}
             />
           </div>
-          <Button disabled={loading} className="mt-4 w-full">
+          <Button disabled={loading} className="mt-4 w-full bg-blue-400 hover-blue-300">
             {loading && <Loader className="mr-2 animate-spin" size={16} />}
             Register
           </Button>
