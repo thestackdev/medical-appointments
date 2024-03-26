@@ -31,14 +31,14 @@ export default function Page() {
   };
 
   return (
-    <main className="max-w-screen-sm mx-auto p-4 mt-8">
-      <h1 className="text-2xl font-bold text-center ">LOGIN</h1>
-      <Card className="mt-4 p-4">
+    <main className="isolate max-w-screen-sm mx-auto p-4 mt-32 rounded-3xl ">
+      <h1 className="text-2xl font-bold text-center text-black ">LOGIN</h1>
+      <Card className="mt-4 p-4 border-0 ">
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <Label>Email</Label>
+          <div className="mb-4 text-black">
+            <Label className="text-xl">Email</Label>
             <Input
-              className="mt-2"
+              className="mt-2 bg-gray-100 border-0"
               type="email"
               placeholder="user@gmail.com"
               value={email}
@@ -46,13 +46,13 @@ export default function Page() {
             />
           </div>
           <div className="mb-4">
-            <div className="w-full flex justify-between">
-              <Label>Password</Label>
+            <div className="w-full flex justify-between text-black">
+              <Label className="text-xl">Password</Label>
               
             </div>
             <div className= "flex flex-col">
               <Input
-                className="mt-2"
+                className="mt-2 bg-gray-100 border-0"
                 type="password"
                 placeholder="Password"
                 value={password}
@@ -68,13 +68,13 @@ export default function Page() {
           </div>
           
           <div className="w-full flex justify-center">
-            <Button disabled={loading} className="mt-4 w-1/2  items-center">
+            <Button disabled={loading} className="mt-4 w-1/2  items-center bg-blue-400 hover:bg-blue-300">
               {loading && <Loader className="mr-2 animate-spin" size={16} />}
               Login
             </Button>
           </div>
         </form>
-        <div className="mt-4 text-center">
+        <div className="mt-4 text-center text-black">
           <span>
             {"Don't have an account?"}
             <Link href="/register"> Register</Link>

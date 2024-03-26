@@ -95,8 +95,8 @@ export default function MainNav({ className, session }: MainNavProps) {
             </div>
           </SheetContent>
         </Sheet>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900 lg:text-xl dark:text-white">
-          Medical Appointments
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900 lg:text-2xl dark:text-black">
+         ONLINE DOCTOR APPOINTMENTS
         </h1>
         <ThemeToggle />
       </nav>
