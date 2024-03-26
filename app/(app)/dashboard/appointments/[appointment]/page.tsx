@@ -43,6 +43,10 @@ export default async function Page({
     return now < appointmentDate;
   }
 
+  function formatDate(date: Date) {
+    return date.toTimeString();
+  }
+
   const isVideoCallEnabled = isVideoCallEnabledHandler();
 
   return (
@@ -73,9 +77,7 @@ export default async function Page({
                 </div>
                 <div>
                   <h2 className="text-lg font-bold">Time</h2>
-                  <p>
-                    {new Date(response.appointmentDate).toLocaleTimeString()}
-                  </p>
+                  <p>{formatDate(new Date(response.appointmentDate))}</p>
                 </div>
               </div>
               <div className="mt-4">
