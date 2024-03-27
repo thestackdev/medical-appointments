@@ -31,7 +31,7 @@ export default function VideoCall({
 
   return (
     <div>
-      <Button onClick={handleJoin} disabled={isVideoCallEnabled}>
+      <Button onClick={handleJoin} disabled={false}>
         {user?.accountType === "doctor" ? "Start" : "Join"} Video Call
       </Button>
     </div>
