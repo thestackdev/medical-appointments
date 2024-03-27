@@ -38,19 +38,6 @@ export default async function Page({
     redirect("/dashboard/appointments");
   }
 
-  function isVideoCallEnabledHandler() {
-    const appointmentDate = new Date(response.appointmentDate);
-    appointmentDate.setHours(appointmentDate.getMinutes() + 30);
-    const now = new Date();
-    return now < appointmentDate;
-  }
-
-  function formatDate(date: Date) {
-    return date.toTimeString();
-  }
-
-  const isVideoCallEnabled = isVideoCallEnabledHandler();
-
   return (
     <div>
       <main className="max-w-screen-xl mx-auto p-4 mt-8">
@@ -92,7 +79,7 @@ export default async function Page({
           <div className="flex gap-4 mt-4">
             <VideoCall
               appointmentId={response.id}
-              isEnabled={isVideoCallEnabled}
+              appointmentDate={response.appointmentDate}
             />
             {session.accountType === "doctor" ? (
               <Prescription
